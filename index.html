@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0,user-scalable=1">
+  <title>Maybal Voucher</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', 'Myanmar Text', sans-serif;
+      background: linear-gradient(45deg, rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753), rgba(255, 0, 106, 0.774), rgba(247, 0, 255, 0.767));
+      background-size: 600% 600%;
+      animation: gradientBG 15s ease infinite;
+      color: #3A3A3A;
+      padding: 20px;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.692);
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+     h2 {
+      text-align: center;
+      color: rgba(104, 0, 241, 0.753);
+      text-shadow: 0 0 8px #ffffffa4;
+      margin-bottom: 10px;
+      margin-top: 60px;
+    }
+
+    h1 {
+      text-align: center;
+      color: rgba(104, 0, 241, 0.753);
+      text-shadow: 0 0 8px #ffffffa4;
+      margin-bottom: 15px;
+      margin-top: 40px;
+    }
+
+    .aaa {
+      text-align: center;
+      font-size: 10px;
+      color: rgba(56, 43, 43, 0.5);
+      margin-top: 5px;
+    }
+
+    #addItemBtn {
+      position: absolute;
+      top: 200px;
+      left: 20px;
+      background: linear-gradient(45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      z-index: 10;
+      width: 120px;
+      text-align: center;
+    }
+
+    #addItemBtn:hover {
+      background: linear-gradient(-45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      transform: scale(1.05);
+    }
+
+    #itemFormContainer {
+      position: absolute;
+      top: 200px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transform-origin: top left;
+      transform: scale(0);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+      z-index: 20;
+      width: 280px;
+    }
+
+    #itemFormContainer.visible {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    #itemForm {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #closeFormBtn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.1);
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #555;
+      font-weight: bold;
+    }
+
+    #closeFormBtn:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    form input {
+      padding: 10px;
+      margin: 0;
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: rgba(255, 255, 255, 0.7);
+      color: #3A3A3A;
+    }
+
+    #itemForm button[type="submit"] {
+      background: linear-gradient(45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      color: white;
+      padding: 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: 0.3s ease;
+    }
+
+    #itemForm button[type="submit"]:hover {
+      background: linear-gradient(-45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      transform: scale(1.02);
+    }
+
+    #voucher { margin-top: 25px; }
+
+    .voucher-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: rgba(104, 0, 241, 0.753);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+
+    th {
+      background: rgba(104, 0, 241, 0.753);
+      color: white;
+    }
+
+    tr:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    #grandTotal {
+      font-size: 18px;
+      text-align: center;
+      margin-top: 10px;
+      color: #3A3A3A;
+    }
+
+    #saveBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      background: linear-gradient(45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      color: #fff;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+      transition: 0.3s ease;
+    }
+
+    #saveBtn:hover {
+      opacity: 0.9;
+      background: linear-gradient(-45deg,rgba(247, 0, 255, 0.658), rgba(104, 0, 241, 0.753));
+      transform: scale(1.05);
+    }
+
+    .action-btn {
+      background: linear-gradient(45deg, rgba(255, 0, 106, 0.774), rgba(247, 0, 255, 0.767));
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(-45deg, rgba(255, 0, 106, 0.774), rgba(247, 0, 255, 0.767));
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      table { font-size: 12px; }
+      #itemFormContainer {
+        width: calc(100% - 40px);
+      }
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 15;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <h1>Voucher Generator</h1>
+    
+    
+    
+    
+    <div id="overlay"></div>
+    
+    <form id="detailsForm">
+      <input type="text" id="recipientName" placeholder="Recipient's Name" required>
+      <input type="date" id="voucherDate" required>
+    </form>
+
+
+    <button id="addItemBtn">Add Items</button>
+    
+    <div id="itemFormContainer">
+      <button id="closeFormBtn">×</button>
+      <form id="itemForm">
+        <input type="text" id="itemName" placeholder="Item Name" required>
+        <input type="number" id="itemQuantity" placeholder="Quantity" required>
+        <input type="number" id="itemPrice" placeholder="Price" required>
+        <button type="submit">Add Item</button>
+      </form>
+    </div>
+
+    <div id="voucher">
+      <h2>Maybal</h2>
+      <div class="voucher-header">
+        <p id="displayRecipientName"></p>
+        <p id="displayVoucherDate"></p>
+      </div>
+      <div style="overflow-x: auto;">
+        <table id="voucherTable">
+          <thead>
+            <tr>
+              <th>Item Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <h3 id="grandTotal">Grand Total: 0 ကျပ်</h3>
+      <div class="aaa">Aung Kaung Myat production</div>
+    </div>
+    <button id="saveBtn">Save Voucher</button>
+  </div>
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    // ===== DYNAMIC ISLAND FUNCTIONALITY =====
+const addItemBtn = document.getElementById('addItemBtn');
+const itemFormContainer = document.getElementById('itemFormContainer');
+const closeFormBtn = document.getElementById('closeFormBtn');
+const overlay = document.getElementById('overlay');
+
+// Show the form with Dynamic Island animation
+addItemBtn.addEventListener('click', () => {
+  itemFormContainer.classList.add('visible');
+  overlay.style.display = 'block';
+  addItemBtn.style.opacity = '0';
+  setTimeout(() => {
+    addItemBtn.style.display = 'none';
+  }, 400);
+});
+
+// Hide the form and show the button again
+function closeForm() {
+  itemFormContainer.classList.remove('visible');
+  overlay.style.display = 'none';
+  addItemBtn.style.display = 'block';
+  setTimeout(() => {
+    addItemBtn.style.opacity = '1';
+  }, 50);
+}
+
+// Close form when X button or overlay is clicked
+closeFormBtn.addEventListener('click', closeForm);
+overlay.addEventListener('click', closeForm);
+
+// ===== VOUCHER DETAILS FORM =====
+document.getElementById('detailsForm').addEventListener('input', function () {
+  // Update displayed recipient name and date in real-time
+  document.getElementById('displayRecipientName').textContent = 
+    document.getElementById('recipientName').value;
+  document.getElementById('displayVoucherDate').textContent = 
+    document.getElementById('voucherDate').value;
+});
+
+// ===== ITEM FORM HANDLING =====
+document.getElementById('itemForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  
+  // Get form values
+  const itemName = document.getElementById('itemName').value;
+  const itemQuantity = document.getElementById('itemQuantity').value;
+  const itemPrice = document.getElementById('itemPrice').value;
+  const total = (itemQuantity * itemPrice).toFixed(0);
+  
+  // Create new table row
+  const tableBody = document.querySelector('#voucherTable tbody');
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${itemName}</td>
+    <td>${itemQuantity}</td>
+    <td>${itemPrice} ကျပ်</td>
+    <td>${total} ကျပ်</td>
+    <td><button class="action-btn" onclick="removeRow(this)">Remove</button></td>
+  `;
+  
+  // Add row to table and update UI
+  tableBody.appendChild(row);
+  updateGrandTotal();
+  document.getElementById('itemForm').reset();
+  closeForm();
+});
+
+// ===== TABLE ROW MANAGEMENT =====
+function removeRow(button) {
+  if (confirm("本当に削除しますか?")) {
+    const row = button.parentNode.parentNode;
+    row.remove();
+    updateGrandTotal();
+  }
+}
+
+// Calculate and update the grand total
+function updateGrandTotal() {
+  const rows = document.querySelectorAll('#voucherTable tbody tr');
+  let grandTotal = 0;
+  
+  rows.forEach(row => {
+    const total = parseFloat(row.children[3].textContent.replace(' ကျပ်', ''));
+    grandTotal += total;
+  });
+  
+  document.getElementById('grandTotal').textContent = 
+    `Grand Total: ${grandTotal.toFixed(0)} ကျပ်`;
+}
+
+// ===== VOUCHER SAVING FUNCTIONALITY =====
+document.getElementById('saveBtn').addEventListener('click', function () {
+  // Remove action buttons before capturing
+  const table = document.getElementById('voucherTable');
+  const headerRow = table.querySelector('thead tr');
+  
+  if (headerRow.children.length === 5) {
+    headerRow.removeChild(headerRow.children[4]);
+  }
+  
+  const rows = table.querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    if (row.children.length === 5) {
+      row.removeChild(row.children[4]);
+    }
+  });
+
+  // Capture voucher as image
+  const voucher = document.getElementById('voucher');
+  html2canvas(voucher, { 
+    useCORS: true, 
+    scale: 2 
+  }).then(canvas => {
+    canvas.toBlob(function(blob) {
+      const link = document.createElement('a');
+      link.download = 'voucher.jpg';
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      location.reload();
+    }, 'image/jpeg', 0.95);
+  }).catch(error => {
+    alert("Voucher ကို capture လုပ်မရပါ - " + error);
+  });
+});
+</script>
+
+</body></html>
